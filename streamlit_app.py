@@ -49,6 +49,17 @@ def api_post(path: str, payload: dict[str, Any] | None = None, timeout: int = 90
     return response.json()
 
 
+def latest_first_pairs(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    pairs = []
+    index = 0
+    while index < len(messages):
+        user_message = messages[index]
+        assistant_message = messages[index + 1] if index + 1 < len(messages) else None
+        pairs.append({"user": user_message, "assistant": assistant_message})
+        index += 2
+    return list(reversed(pairs))
+
+
 if "session_id" not in st.session_state:
     st.session_state.session_id = None
 if "chat_history" not in st.session_state:
@@ -105,7 +116,7 @@ with left:
     action_cols = st.columns([0.24, 0.24, 0.52])
     send = action_cols[0].button("发送", type="primary", use_container_width=True)
     reset = action_cols[1].button("新会话", use_container_width=True)
-    action_cols[2].caption("高风险问题会触发工单；每次回答都会写入 trace。")
+    action_cols[2].caption("最新问题会显示在最上方；高风险问题会触发工单并写入 trace。")
 
     if reset:
         st.session_state.session_id = None
@@ -124,17 +135,21 @@ with left:
         st.session_state.chat_history.append({"role": "user", "content": query.strip()})
         st.session_state.chat_history.append({"role": "assistant", "content": response["answer"], "raw": response})
 
-    for message in st.session_state.chat_history:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-            if message["role"] == "assistant" and "raw" in message:
-                raw = message["raw"]
-                c1, c2, c3 = st.columns(3)
-                c1.caption(f"action: {raw['action']}")
-                c2.caption(f"confidence: {raw['confidence']}")
-                c3.caption(f"trace: {raw['trace_id']}")
-                if raw.get("citations"):
-                    st.dataframe(raw["citations"], hide_index=True, use_container_width=True)
+    for pair in latest_first_pairs(st.session_state.chat_history):
+        for message in [pair["user"], pair["assistant"]]:
+            if not message:
+                continue
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
+                if message["role"] == "assistant" and "raw" in message:
+                    raw = message["raw"]
+                    c1, c2, c3 = st.columns(3)
+                    c1.caption(f"action: {raw['action']}")
+                    c2.caption(f"confidence: {raw['confidence']}")
+                    c3.caption(f"trace: {raw['trace_id']}")
+                    if raw.get("citations"):
+                        st.dataframe(raw["citations"], hide_index=True, use_container_width=True)
+        st.divider()
 
 with right:
     tab_trace, tab_eval, tab_tickets = st.tabs(["Trace", "Eval", "Tickets"])
