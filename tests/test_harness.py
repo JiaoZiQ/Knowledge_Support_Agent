@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def make_harness(tmp_path):
     settings = Settings(
         database_path=tmp_path / "test.db",
+        chroma_path=tmp_path / "chroma",
         knowledge_base_path=ROOT / "data" / "knowledge_base" / "raw" / "knowledge_base.json",
         eval_dataset_path=ROOT / "data" / "eval" / "eval_dataset.json",
         use_openai_llm=False,

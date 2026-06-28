@@ -4,6 +4,7 @@ import re
 from collections import Counter
 
 import numpy as np
+from openai import OpenAI
 
 
 TOKEN_RE = re.compile(r"[a-zA-Z0-9_]+|[\u4e00-\u9fff]")
@@ -34,6 +35,27 @@ class HashEmbeddingModel:
         if norm == 0:
             return vector
         return vector / norm
+
+    def embed_batch(self, texts: list[str]) -> list[list[float]]:
+        return [self.embed(text).astype(float).tolist() for text in texts]
+
+
+class OpenAIEmbeddingModel:
+    def __init__(
+        self,
+        api_key: str,
+        base_url: str | None,
+        model: str = "text-embedding-3-small",
+    ) -> None:
+        self.client = OpenAI(api_key=api_key, base_url=base_url or None)
+        self.model = model
+
+    def embed(self, text: str) -> np.ndarray:
+        return np.array(self.embed_batch([text])[0], dtype=np.float32)
+
+    def embed_batch(self, texts: list[str]) -> list[list[float]]:
+        response = self.client.embeddings.create(model=self.model, input=texts)
+        return [item.embedding for item in response.data]
 
 
 def cosine_similarity(left: np.ndarray, right: np.ndarray) -> float:

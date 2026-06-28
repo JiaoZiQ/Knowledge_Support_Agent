@@ -15,8 +15,11 @@ class Settings(BaseSettings):
     openai_base_url: str | None = None
     chat_model: str = "gpt-4o-mini"
     embedding_model: str = "text-embedding-3-small"
+    embedding_provider: str = "hash"
     use_openai_llm: bool = False
     database_path: Path = Field(default=Path("data/app.db"))
+    chroma_path: Path = Field(default=Path("data/chroma"))
+    chroma_collection: str = "knowledge_support"
     knowledge_base_path: Path = Field(default=Path("data/knowledge_base/raw/knowledge_base.json"))
     eval_dataset_path: Path = Field(default=Path("data/eval/eval_dataset.json"))
     retrieval_top_k: int = 4

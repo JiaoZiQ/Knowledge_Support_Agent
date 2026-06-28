@@ -9,16 +9,29 @@ from app.eval_runner import EvalRunner
 from app.harness import AgentHarness
 from app.knowledge import KnowledgeBase
 from app.llm import AnswerGenerator
+from app.embeddings import HashEmbeddingModel, OpenAIEmbeddingModel
 from app.schemas import ChatRequest, ChatResponse, TicketRequest, TicketResponse, UploadResponse
 from app.storage import AppStorage
 from app.tools import ToolRegistry
-from app.vector_store import LocalVectorStore
+from app.vector_store import ChromaVectorStore
 
 
 def create_services(settings: Settings) -> dict[str, object]:
     knowledge_base = KnowledgeBase(settings.knowledge_base_path)
     items = knowledge_base.load()
-    vector_store = LocalVectorStore()
+    if settings.embedding_provider == "openai" and settings.openai_api_key:
+        embedding_model = OpenAIEmbeddingModel(
+            api_key=settings.openai_api_key,
+            base_url=settings.openai_base_url,
+            model=settings.embedding_model,
+        )
+    else:
+        embedding_model = HashEmbeddingModel()
+    vector_store = ChromaVectorStore(
+        persist_path=str(settings.chroma_path),
+        collection_name=settings.chroma_collection,
+        embedding_model=embedding_model,
+    )
     vector_store.build(items)
     storage = AppStorage(settings.database_path)
     tools = ToolRegistry(storage=storage, vector_store=vector_store)
@@ -46,22 +59,34 @@ def create_services(settings: Settings) -> dict[str, object]:
     }
 
 
-settings = get_settings()
-services = create_services(settings)
 app = FastAPI(
     title="Knowledge Support Agent",
     description="A customer support RAG Agent with a lightweight Agent Harness.",
     version="0.1.0",
 )
+services: dict[str, object] | None = None
+
+
+def get_services() -> dict[str, object]:
+    global services
+    if services is None:
+        services = create_services(get_settings())
+    return services
 
 
 @app.get("/health")
 def health() -> dict[str, object]:
-    knowledge_base: KnowledgeBase = services["knowledge_base"]  # type: ignore[assignment]
+    app_services = get_services()
+    knowledge_base: KnowledgeBase = app_services["knowledge_base"]  # type: ignore[assignment]
     return {
         "status": "ok",
         "knowledge_items": len(knowledge_base.items),
         "categories": knowledge_base.summary(),
+        "orchestrator": "langgraph",
+        "vector_store": "chroma",
+        "embedding_provider": get_settings().embedding_provider,
+        "llm_enabled": get_settings().use_openai_llm,
+        "chat_model": get_settings().chat_model if get_settings().use_openai_llm else "template-fallback",
     }
 
 
@@ -82,21 +107,24 @@ async def upload_documents(file: UploadFile = File(...)) -> UploadResponse:
 
     knowledge_base = KnowledgeBase(temp_path)
     items = knowledge_base.load()
-    vector_store: LocalVectorStore = services["vector_store"]  # type: ignore[assignment]
+    app_services = get_services()
+    vector_store: ChromaVectorStore = app_services["vector_store"]  # type: ignore[assignment]
     vector_store.build(items)
-    services["knowledge_base"] = knowledge_base
+    app_services["knowledge_base"] = knowledge_base
     return UploadResponse(loaded_items=len(items), categories=knowledge_base.summary())
 
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest) -> ChatResponse:
-    harness: AgentHarness = services["harness"]  # type: ignore[assignment]
+    app_services = get_services()
+    harness: AgentHarness = app_services["harness"]  # type: ignore[assignment]
     return harness.chat(request)
 
 
 @app.post("/tickets", response_model=TicketResponse)
 def create_ticket(request: TicketRequest) -> TicketResponse:
-    storage: AppStorage = services["storage"]  # type: ignore[assignment]
+    app_services = get_services()
+    storage: AppStorage = app_services["storage"]  # type: ignore[assignment]
     ticket_id = storage.create_ticket(
         user_id=request.user_id,
         session_id=request.session_id,
@@ -110,13 +138,15 @@ def create_ticket(request: TicketRequest) -> TicketResponse:
 
 @app.get("/tickets")
 def list_tickets(limit: int = 50) -> list[dict[str, object]]:
-    storage: AppStorage = services["storage"]  # type: ignore[assignment]
+    app_services = get_services()
+    storage: AppStorage = app_services["storage"]  # type: ignore[assignment]
     return storage.list_tickets(limit=limit)
 
 
 @app.get("/sessions/{session_id}")
 def session_trace(session_id: str) -> dict[str, object]:
-    storage: AppStorage = services["storage"]  # type: ignore[assignment]
+    app_services = get_services()
+    storage: AppStorage = app_services["storage"]  # type: ignore[assignment]
     trace = storage.get_session_trace(session_id)
     if not trace["session"]:
         raise HTTPException(status_code=404, detail="Session not found")
@@ -125,5 +155,6 @@ def session_trace(session_id: str) -> dict[str, object]:
 
 @app.post("/eval/run")
 def run_eval(limit: int | None = None) -> dict[str, object]:
-    eval_runner: EvalRunner = services["eval_runner"]  # type: ignore[assignment]
+    app_services = get_services()
+    eval_runner: EvalRunner = app_services["eval_runner"]  # type: ignore[assignment]
     return eval_runner.run(limit=limit).model_dump()

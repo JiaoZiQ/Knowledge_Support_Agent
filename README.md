@@ -1,32 +1,32 @@
 # Knowledge Support Agent
 
-一个面向 AI 简历优化平台的知识库客服 Agent。项目重点不是普通 RAG，而是用轻量 **Agent Harness** 把检索、工具调用、风险策略、人工介入、trace、memory 和 eval 串成可演示的业务闭环。
+一个面向 AI 简历优化平台的知识库客服 Agent。项目重点不是普通聊天机器人，而是把 **LangGraph workflow + Chroma RAG + Tool Calling + Human Handoff + Trace + Eval** 做成一个可运行、可解释、可评估的 Agent Harness。
 
 ## 功能
 
-- 知识库检索：读取 `data/knowledge_base/raw/knowledge_base.json`，构建本地向量检索索引。
-- 客服问答：根据知识库回答，并返回引用来源。
-- Agent Harness：统一控制回答、免责声明、拒答、追问、创建工单。
-- 工具调用：内置知识库检索、工单创建、用户画像、会话摘要工具。
-- 会话记忆：保存用户历史问题和最近动作摘要。
-- Trace log：记录检索结果、工具调用、风险策略、耗时和最终动作。
-- Eval：使用 `data/eval/eval_dataset.json` 评估 action accuracy、category hit rate、refusal precision。
-- Streamlit demo：支持客服对话、trace 查看、工单查看和一键评估。
+- **Chroma RAG**：读取 `data/knowledge_base/raw/knowledge_base.json`，写入本地 Chroma 持久化向量库。
+- **可选真实 embedding**：默认 `EMBEDDING_PROVIDER=hash` 离线可跑；支持切到 `openai` 兼容 embedding。
+- **LangGraph 编排**：客服链路由 `prepare_session -> load_profile -> retrieve -> decide -> create_ticket/generate_answer -> persist_trace` 节点组成。
+- **Agent Harness**：统一控制回答、免责声明、拒答、追问、创建工单和人工介入。
+- **工具调用**：内置知识库检索、工单创建、用户画像、会话摘要工具。
+- **会话记忆**：保存用户历史问题和最近动作摘要，支持多轮上下文。
+- **Trace log**：记录检索结果、LangGraph 节点、guardrail、耗时和最终动作。
+- **Eval runner**：使用 `data/eval/eval_dataset.json` 评估 action accuracy、category hit rate、refusal precision。
+- **Streamlit demo**：支持对话、引用溯源、trace 查看、工单查看和一键评估。
 
 ## 架构
 
 ```mermaid
 flowchart LR
-  U["User question"] --> A["FastAPI /chat"]
-  A --> H["Agent Harness"]
-  H --> T["Tool Registry"]
-  T --> R["Knowledge Retrieval"]
-  T --> K["Create Ticket"]
-  H --> G["Guardrails"]
-  G --> O["Answer / Clarify / Decline / Handoff"]
-  H --> S["SQLite Trace + Memory"]
-  E["Eval Runner"] --> H
-  UI["Streamlit Support Desk"] --> A
+  UI["Streamlit Support Desk"] --> API["FastAPI /chat"]
+  API --> LG["LangGraph Agent Harness"]
+  LG --> P["Profile Tool"]
+  LG --> R["Chroma Retrieval"]
+  LG --> D["Decision / Guardrails"]
+  D --> A["Answer / Disclaimer / Decline"]
+  D --> T["Create Ticket Tool"]
+  LG --> M["SQLite Memory + Trace"]
+  E["Eval Runner"] --> LG
 ```
 
 ## 本地运行
@@ -49,9 +49,25 @@ streamlit run streamlit_app.py
 ```
 
 - API: `http://127.0.0.1:8000/docs`
-- Demo: `http://localhost:8501`
+- Demo: `http://127.0.0.1:8501`
 
-如果使用 OpenAI 兼容接口，在 `.env` 中设置：
+## 配置
+
+`.env.example` 已包含全部必要配置：
+
+```env
+OPENAI_API_KEY=
+OPENAI_BASE_URL=
+CHAT_MODEL=gpt-4o-mini
+EMBEDDING_MODEL=text-embedding-3-small
+USE_OPENAI_LLM=false
+EMBEDDING_PROVIDER=hash
+DATABASE_PATH=data/app.db
+CHROMA_PATH=data/chroma
+CHROMA_COLLECTION=knowledge_support
+```
+
+使用 DeepSeek 等 OpenAI 兼容聊天接口时：
 
 ```env
 OPENAI_API_KEY=你的 key
@@ -60,7 +76,23 @@ CHAT_MODEL=deepseek-v4-flash
 USE_OPENAI_LLM=true
 ```
 
-检索默认仍使用本地 hash embedding，保证 demo 离线可跑；真实模型只负责最终客服回答生成。
+说明：DeepSeek 聊天接口可用于最终回答生成；如果你的服务不支持 embedding，请保持 `EMBEDDING_PROVIDER=hash`。如果换成支持 embeddings 的 OpenAI 兼容服务，可设置 `EMBEDDING_PROVIDER=openai`。
+
+## 当前评估表现
+
+离线 hash embedding + Chroma 重排的当前全量 eval：
+
+- action accuracy: 98%+
+- category hit rate: 93%+
+- refusal precision: 100%
+
+评估命令：
+
+```bash
+python -m pytest -q
+```
+
+或在 Streamlit 的 Eval 标签页一键运行。
 
 ## 面试讲法
 
@@ -68,14 +100,15 @@ USE_OPENAI_LLM=true
 
 可展开的亮点：
 
-- 不是裸 RAG：回答前会判断风险等级和 recommended action。
-- 不是只调 API：有 tool registry、ticket workflow、memory 和 trace。
-- 有人类介入：退款、重复扣费、隐私删除等高风险问题自动建工单。
+- 不是裸 RAG：回答前会判断风险等级、业务动作和是否需要人工介入。
+- 不是只调 API：有 tool registry、ticket workflow、memory、trace 和 eval。
+- 有 LangGraph：用状态图表达客服流程，而不是把所有逻辑塞进一个 prompt。
+- 有 Chroma：知识库被写入真实向量库，支持持久化检索。
+- 有 guardrails：退款、重复扣费、隐私删除、职业承诺、法律医疗财务问题都有明确边界。
 - 有评估：用 golden queries 统计动作准确率、分类命中率和拒答表现。
-- 可扩展：当前是本地检索，后续可以替换成 Chroma/Qdrant；当前是轻量 harness，后续可接 LangGraph/MCP。
 
 ## 简历 Bullet
 
-- 设计并实现知识库客服 Agent，基于 FastAPI 构建轻量 Agent Harness，统一编排 RAG 检索、工具调用、风险策略、人工工单、会话记忆和 trace log。
+- 设计并实现知识库客服 Agent，基于 FastAPI、LangGraph 和 Chroma 构建 Agent Harness，统一编排 RAG 检索、工具调用、风险策略、人工工单、会话记忆和 trace log。
 - 构建客服评估集与 eval runner，评估 action accuracy、category hit rate、refusal precision 和平均延迟，覆盖退款、隐私、拒答、免责声明等高风险场景。
-- 实现 Streamlit 演示台，支持对话问答、引用溯源、Agent 决策路径查看、工单查看和一键评估，提升项目可展示性和面试讲解效率。
+- 实现 Streamlit 演示台，支持对话问答、引用溯源、LangGraph 决策路径查看、工单查看和一键评估，提升项目可展示性和面试讲解效率。
