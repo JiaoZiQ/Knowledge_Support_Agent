@@ -93,22 +93,3 @@ python -m pytest -q
 ```
 
 或在 Streamlit 的 Eval 标签页一键运行。
-
-## 面试讲法
-
-一句话：我做了一个客服场景的 RAG Agent，但重点是 Agent Harness，让模型输出可控、可观测、可评估。
-
-可展开的亮点：
-
-- 不是裸 RAG：回答前会判断风险等级、业务动作和是否需要人工介入。
-- 不是只调 API：有 tool registry、ticket workflow、memory、trace 和 eval。
-- 有 LangGraph：用状态图表达客服流程，而不是把所有逻辑塞进一个 prompt。
-- 有 Chroma：知识库被写入真实向量库，支持持久化检索。
-- 有 guardrails：退款、重复扣费、隐私删除、职业承诺、法律医疗财务问题都有明确边界。
-- 有评估：用 golden queries 统计动作准确率、分类命中率和拒答表现。
-
-## 简历 Bullet
-
-- 设计并实现知识库客服 Agent，基于 FastAPI、LangGraph 和 Chroma 构建 Agent Harness，统一编排 RAG 检索、工具调用、风险策略、人工工单、会话记忆和 trace log。
-- 构建客服评估集与 eval runner，评估 action accuracy、category hit rate、refusal precision 和平均延迟，覆盖退款、隐私、拒答、免责声明等高风险场景。
-- 实现 Streamlit 演示台，支持对话问答、引用溯源、LangGraph 决策路径查看、工单查看和一键评估，提升项目可展示性和面试讲解效率。
