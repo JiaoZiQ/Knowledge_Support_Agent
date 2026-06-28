@@ -2,6 +2,8 @@
 
 一个面向 AI 简历优化平台的知识库客服 Agent。项目重点不是普通聊天机器人，而是把 **LangGraph workflow + Chroma RAG + Tool Calling + Human Handoff + Trace + Eval** 做成一个可运行、可解释、可评估的 Agent Harness。
 
+![Knowledge Support Agent demo](assets/demo.png)
+
 ## 功能
 
 - **Chroma RAG**：读取 `data/knowledge_base/raw/knowledge_base.json`，写入本地 Chroma 持久化向量库。
