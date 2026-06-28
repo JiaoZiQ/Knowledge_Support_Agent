@@ -82,10 +82,10 @@ USE_OPENAI_LLM=true
 
 ## 当前评估表现
 
-离线 hash embedding + Chroma 重排的当前全量 eval：
+离线 hash embedding + Chroma 重排的当前全量 eval（59 cases）：
 
-- action accuracy: 98%+
-- category hit rate: 93%+
+- action accuracy: 100%
+- category hit rate: 100%
 - refusal precision: 100%
 
 评估命令：
