@@ -78,9 +78,11 @@ def get_services() -> dict[str, object]:
 def health() -> dict[str, object]:
     app_services = get_services()
     knowledge_base: KnowledgeBase = app_services["knowledge_base"]  # type: ignore[assignment]
+    eval_runner: EvalRunner = app_services["eval_runner"]  # type: ignore[assignment]
     return {
         "status": "ok",
         "knowledge_items": len(knowledge_base.items),
+        "eval_cases": len(eval_runner.load_cases()),
         "categories": knowledge_base.summary(),
         "orchestrator": "langgraph",
         "vector_store": "chroma",

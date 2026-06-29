@@ -61,6 +61,10 @@ class ChromaVectorStore:
                     "risk_level": item.risk_level,
                     "recommended_action": item.recommended_action,
                     "keywords": ",".join(item.keywords),
+                    "source": item.source or "",
+                    "updated_at": item.updated_at or "",
+                    "tags": ",".join(item.tags),
+                    "requires_human_review": item.requires_human_review,
                 }
                 for item in items
             ],

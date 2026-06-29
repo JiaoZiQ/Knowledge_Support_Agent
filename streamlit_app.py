@@ -95,7 +95,7 @@ else:
 
 metric_cols = st.columns(4)
 metric_cols[0].metric("Knowledge items", health["knowledge_items"])
-metric_cols[1].metric("Categories", len(health["categories"]))
+metric_cols[1].metric("Eval cases", health.get("eval_cases", 0))
 metric_cols[2].metric("LLM", "On" if health["llm_enabled"] else "Fallback")
 metric_cols[3].metric("Session", st.session_state.session_id or "New")
 
@@ -178,7 +178,8 @@ with right:
             st.info("发送一条问题后会显示 LangGraph 节点、检索结果和 guardrail。")
 
     with tab_eval:
-        limit = st.slider("Eval cases", min_value=5, max_value=59, value=20, step=1)
+        max_eval_cases = int(health.get("eval_cases", 67))
+        limit = st.slider("Eval cases", min_value=5, max_value=max_eval_cases, value=min(20, max_eval_cases), step=1)
         if st.button("运行评估", use_container_width=True):
             with st.spinner("运行评估中..."):
                 st.session_state.last_eval = api_post(f"/eval/run?limit={int(limit)}", timeout=180)

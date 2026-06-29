@@ -1,9 +1,19 @@
 {
   "meta": {
     "name": "AI简历助手客服知识库",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "created_at": "2026-06-28",
-    "description": "面向客服RAG Agent系统的结构化知识库，涵盖产品说明、账号管理、简历解析、AI优化、计费退款、数据安全、常见错误及边界策略。"
+    "description": "面向客服RAG Agent系统的结构化知识库，涵盖产品说明、账号管理、简历解析、AI优化、计费退款、数据安全、常见错误及边界策略。",
+    "updated_at": "2026-06-28",
+    "total_entries": 56,
+    "changelog": {
+      "1.1.0": [
+        "所有条目新增 source / updated_at / tags / requires_human_review 字段",
+        "9条核心条目 content 深度扩写至200-400字（billing_004/005/006, privacy_001, resume_003, error_001/002, ticket_001/002）",
+        "修正 eval_bd_004 期望动作：create_ticket → escalate_if_unknown",
+        "新增8条 ask_clarifying_question 类型 eval 用例（eval_clarify_001~008）"
+      ]
+    }
   },
   "knowledge": [
     {
@@ -19,7 +29,14 @@
         "平台"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "faq",
+        "onboarding"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "product_002",
@@ -35,7 +52,14 @@
         "求职者"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "faq",
+        "onboarding"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "product_003",
@@ -50,7 +74,14 @@
         "特性"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "faq",
+        "onboarding"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "product_004",
@@ -65,7 +96,14 @@
         "免责"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "faq",
+        "onboarding"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "account_001",
@@ -81,7 +119,15 @@
         "微信登录"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "account_002",
@@ -96,7 +142,15 @@
         "账号错误"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "account_003",
@@ -111,7 +165,15 @@
         "收不到邮件"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "account_004",
@@ -125,7 +187,15 @@
         "修改账号信息"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "account_005",
@@ -140,7 +210,15 @@
         "解锁"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer_then_escalate"
+      "recommended_action": "answer_then_escalate",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "account_006",
@@ -155,7 +233,15 @@
         "注销流程"
       ],
       "risk_level": "high",
-      "recommended_action": "answer_with_warning"
+      "recommended_action": "answer_with_warning",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "account",
+        "auth",
+        "self-service"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "resume_001",
@@ -172,7 +258,15 @@
         "什么格式"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "resume_002",
@@ -187,13 +281,21 @@
         "10MB"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "resume_003",
       "category": "resume",
       "title": "简历解析失败的常见原因",
-      "content": "解析失败常见原因：①文件为扫描版PDF（图片型，无文字层）；②文件使用了复杂的多栏、表格或图形排版；③文件受密码保护；④文件损坏或格式不规范；⑤文件内容为纯图片。建议用户检查文件是否可以正常打开和复制文字，若无法复制则可能是扫描版。",
+      "content": "简历解析失败通常由以下五类原因导致，客服Agent可根据用户描述逐项排查：\n\n① 扫描版/图片型PDF：这是最常见的原因。扫描版PDF本质上是图片，没有可提取的文字层。判断方式：在PDF阅读器中尝试选中文字，若无法选中则为扫描版。免费版不支持OCR，专业版支持基础OCR但准确率约70-85%。\n\n② 复杂排版结构：多栏布局（左右两栏型简历）、嵌套表格、艺术字体、文字框叠加等设计元素会干扰解析引擎提取文字顺序，导致内容错位或解析失败。建议用户将简历转换为单栏纯文字格式后重新上传。\n\n③ 文件受密码保护：有些用户在保存PDF时设置了打开密码或编辑限制。系统无法解析受保护文件。解决方式：在Adobe Acrobat或其他PDF工具中去除密码后重新上传。\n\n④ 文件损坏：下载不完整或格式转换异常可能导致文件结构损坏，表现为上传后无法预览。建议用户重新导出或下载文件。\n\n⑤ 编码问题：部分老版本DOCX文件使用非UTF-8编码，可能导致中文乱码或解析中断。建议用WPS或Word重新另存为后上传。\n\n处理建议：Agent应按上述顺序引导用户自查。若用户反映连续3次解析失败且无法手动录入内容，须创建technical类型工单，请用户附上脱敏后的文件（可删除姓名手机等个人信息后发送）供技术团队诊断。Agent不应承诺问题一定能解决。",
       "keywords": [
         "解析失败",
         "解析错误",
@@ -202,7 +304,15 @@
         "解析不了"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "resume_004",
@@ -217,7 +327,15 @@
         "扫描识别"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "resume_005",
@@ -232,7 +350,15 @@
         "简历字段"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "resume_006",
@@ -246,7 +372,15 @@
         "技术问题"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer_then_escalate"
+      "recommended_action": "answer_then_escalate",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "upload",
+        "parsing",
+        "file"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "ai_opt_001",
@@ -261,7 +395,15 @@
         "简历优化范围"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ai_opt_002",
@@ -277,7 +419,15 @@
         "双语"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ai_opt_003",
@@ -292,7 +442,15 @@
         "岗位匹配"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ai_opt_004",
@@ -307,7 +465,15 @@
         "效果承诺"
       ],
       "risk_level": "high",
-      "recommended_action": "answer_with_disclaimer"
+      "recommended_action": "answer_with_disclaimer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "ai_opt_005",
@@ -322,7 +488,15 @@
         "实习描述"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ai_opt_006",
@@ -337,7 +511,15 @@
         "关键词"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "optimization",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "interview_001",
@@ -352,7 +534,15 @@
         "面试问题"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "interview",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "interview_002",
@@ -366,7 +556,15 @@
         "定向面试题"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "interview",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "interview_003",
@@ -381,7 +579,15 @@
         "行业"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "interview",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "interview_004",
@@ -395,7 +601,15 @@
         "AI生成免责"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer_with_disclaimer"
+      "recommended_action": "answer_with_disclaimer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "ai",
+        "interview",
+        "content"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "billing_001",
@@ -411,7 +625,15 @@
         "收费"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "billing_002",
@@ -426,7 +648,15 @@
         "次数重置"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "billing_003",
@@ -441,13 +671,21 @@
         "付款失败"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "billing_004",
       "category": "billing",
       "title": "重复扣费如何处理",
-      "content": "如果用户反映重复扣费，客服Agent需引导用户提供：①涉及的订单号（可在账单记录中查看）；②扣费时间和金额；③支付渠道（微信/支付宝/银行卡）。Agent不应直接承诺退款或确认重复扣费事实，须创建billing类型工单，由人工财务核实后在1-3个工作日内处理。",
+      "content": "如果用户反映遭遇重复扣费，客服Agent的标准处理流程如下。\n\n第一步：引导用户自查。请用户登录账号，进入【账单中心】→【交易记录】，确认是否存在同一时间段内两条金额相同的扣款记录，并截图保存。\n第二步：收集必要信息。Agent需要向用户索取以下信息，缺一不可：①涉及订单号（账单中心可查，格式如 ORD-202501-XXXXXX）；②每笔扣款的具体时间和金额；③支付渠道（微信/支付宝/银行卡，以及对应的支付账号末四位）。\n第三步：创建工单，禁止自行承诺。Agent在任何情况下都不得自行确认\"确实重复扣费\"，也不得承诺\"一定退款\"或\"X天内退款\"。必须创建 billing 类型工单，并将上述信息完整填入工单字段。工单优先级设为\"紧急\"。\n第四步：告知用户后续流程。告知用户：财务团队将在1-3个工作日内核实；若确认重复扣费，将在核实后3-7个工作日内原路退回；工单每次状态变更均会邮件通知。\n注意：若用户同时通过支付宝/微信平台发起了退款争议，告知其不影响工单处理，但两边处理结果以平台财务核实为准。",
       "keywords": [
         "重复扣费",
         "扣了两次",
@@ -456,13 +694,21 @@
         "退款"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "billing_005",
       "category": "billing",
       "title": "退款条件",
-      "content": "支持退款的情形：①购买后7天内且未使用任何AI优化次数，可申请全额退款；②因系统Bug导致扣费但功能未激活，经核实后全额退款；③重复扣费经核实后退还多余款项。退款流程：用户提交billing工单→人工核实（1-3工作日）→原路退回（到账3-7个工作日）。",
+      "content": "平台的退款政策遵循\"条件明确、流程合规、人工核实\"原则，Agent不得绕过人工流程自行批准或拒绝退款。\n\n支持退款的三种情形：\n① 鲜用7日退：购买后自然日7天内，且账号内AI优化使用次数为0次（系统日志为准，非用户自述），可申请全额退款。若已使用1次及以上，则不符合条件。\n② 功能未激活退：用户已完成支付（有支付凭证），但对应套餐功能超过60分钟仍未激活，经技术核实属于系统故障，全额退款。\n③ 重复扣费退：同一订单被扣款两次或以上，经财务核实后，多余款项全额退还，原订单保持有效。\n\n退款执行流程（Agent须告知用户）：\n用户提交billing工单 → 人工核实（1-3工作日）→ 财务审批 → 原路退回（到账时间：支付宝/微信1-3工作日，银行卡3-7工作日）。\n\nAgent的行为边界：Agent可以告知用户退款条件和流程，但不得说\"你符合退款条件，可以退\"，也不得说\"你不符合条件，无法退\"。所有判定权归人工客服。若用户追问\"我到底能不能退\"，标准回复为：退款资格需财务团队核实账单数据后才能确认，工单是唯一渠道。",
       "keywords": [
         "退款条件",
         "如何退款",
@@ -470,13 +716,21 @@
         "退款政策"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "billing_006",
       "category": "billing",
       "title": "不支持退款的情况",
-      "content": "以下情况不支持退款：①购买超过7天；②购买后已使用AI优化功能（即使只使用1次）；③年付套餐中途退订（不退剩余月份）；④账号因违规被封禁；⑤用户自行注销账号后申请退款（冷静期内注销除外）。若用户强烈要求，须创建工单由人工客服最终判定，Agent不得擅自拒绝或承诺。",
+      "content": "以下情况依据平台服务协议明确不支持退款，Agent可直接告知用户，但若用户有异议仍须创建工单由人工最终判定，Agent不得单方面终结诉求。\n\n不支持退款的情形：\n① 超7日未退：购买超过自然日7天，无论使用情况如何，均不支持退款。\n② 已使用功能：购买后已使用AI优化功能（哪怕只用了1次），视为已享受服务，不支持退款。使用记录以系统日志为准。\n③ 年付中途退订：年付套餐不支持按剩余月份折算退款，购买时用户需确认此条款。\n④ 账号违规封禁：因违反平台服务条款被封禁的账号，不支持退款，亦不支持将套餐转移至其他账号。\n⑤ 注销后申请：账号进入30天冷静期后注销，期满前未申请退款的，注销完成后不再受理。冷静期内（未正式注销）仍可提交退款工单。\n⑥ 用户误操作：如因用户自行升级套餐后悔、误购年付等主观原因，不在退款范围内。\n\n特别说明：上述六条是平台标准政策，但平台保留对特殊情况酌情处理的权利，Agent须引导用户通过工单通道提出申请，不得代替人工做最终判定。",
       "keywords": [
         "不退款",
         "无法退款",
@@ -485,7 +739,15 @@
         "不予退款"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "billing_007",
@@ -499,13 +761,21 @@
         "退款处理流程"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "billing",
+        "payment",
+        "subscription"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "privacy_001",
       "category": "privacy",
       "title": "简历数据如何保存",
-      "content": "简历数据采用AES-256加密存储在国内合规云服务器（符合等保三级要求）。每份简历独立加密，访问权限仅限账号本人。员工无法直接访问用户简历原文，系统管理员只能在用户授权或法律要求时访问。传输过程全程使用HTTPS加密。",
+      "content": "平台对用户简历及个人数据的存储和保护遵循以下规范：\n\n存储架构：所有用户数据存储在国内合规云服务商提供的服务器上，满足国家网络安全等级保护三级（等保三级）要求。数据中心具备物理隔离、双活容灾和异地备份能力，SLA承诺99.95%可用性。\n\n加密机制：①静态加密：每份简历文件采用AES-256算法独立加密存储，密钥与数据分离管理；②传输加密：所有客户端与服务器之间的通信强制使用TLS 1.2及以上协议（HTTPS）；③字段级加密：姓名、手机号、邮箱等PII字段在数据库层额外加密存储。\n\n访问控制：①普通员工无法访问用户简历原文；②客服人员只能访问用户的账号元数据（非简历内容）；③系统管理员的访问行为全程留审计日志；④仅在用户主动授权（如技术支持请求）或法律强制要求时，才可访问具体简历内容，且须双人审批。\n\n数据隔离：每个用户账号的数据在逻辑上完全隔离，无法跨账号访问。多租户环境下采用行级别安全策略。\n\n若用户对数据安全有进一步疑问或需要合规证明文件，可提交privacy类型工单，平台可提供等保三级认证证书副本。",
       "keywords": [
         "数据安全",
         "简历保存",
@@ -514,7 +784,15 @@
         "安全性"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "privacy_002",
@@ -529,7 +807,15 @@
         "数据使用"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "privacy_003",
@@ -544,7 +830,15 @@
         "GDPR"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "privacy_004",
@@ -558,7 +852,15 @@
         "数据期限"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "privacy_005",
@@ -573,7 +875,15 @@
         "个人数据"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "privacy_006",
@@ -588,13 +898,21 @@
         "数据安全"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer_with_warning"
+      "recommended_action": "answer_with_warning",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "privacy",
+        "gdpr",
+        "data"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "error_001",
       "category": "error",
       "title": "上传失败的处理步骤",
-      "content": "上传失败建议按以下顺序排查：①确认文件格式是否支持（PDF/DOCX/TXT）；②确认文件大小不超过10MB；③检查网络连接是否稳定；④尝试刷新页面后重新上传；⑤换用不同浏览器（推荐Chrome最新版）；⑥若文件加密有密码保护，先去除密码再上传。以上步骤均无效时，请截图错误提示并提交technical类型工单。",
+      "content": "简历上传失败是用户最常遇到的问题之一，Agent应按以下结构化步骤引导用户排查，每步之间确认是否解决再进入下一步。\n\nStep 1 — 确认文件格式：系统支持PDF、DOCX、DOC、TXT，不支持JPG/PNG/PPT/WPS格式。请用户确认文件扩展名，若格式不符，提示转换后重试。\n\nStep 2 — 确认文件大小：单文件上传上限为10MB。用户可右键文件查看属性确认大小。超出时建议：①用Smallpdf/iLovePDF压缩PDF；②删除简历中嵌入的照片或高清背景图；③将DOCX另存为PDF后对比大小。\n\nStep 3 — 排查密码保护：若文件设有打开密码或权限限制，系统会拒绝上传。请用户先去除密码后重试。\n\nStep 4 — 网络与浏览器环境：①检查网络连接是否稳定（建议切换至有线或5GHz WiFi）；②强制刷新页面（Ctrl+Shift+R）；③换用Chrome或Edge最新版本；④若使用公司网络，确认无代理或防火墙拦截上传请求。\n\nStep 5 — 重试机制：关闭当前标签页，重新打开上传页面，等待页面完全加载后再次拖入或选择文件。\n\nStep 6 — 仍然失败：请用户截图错误提示（包含页面上的错误代码或错误描述），提交technical类型工单。工单中注明：文件格式、文件大小、使用浏览器版本、截图附件。Agent不应直接帮用户判断是平台Bug还是用户操作问题，由技术团队核实。",
       "keywords": [
         "上传失败",
         "无法上传",
@@ -603,13 +921,21 @@
         "上传不了"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "error_002",
       "category": "error",
       "title": "解析失败的处理步骤",
-      "content": "解析失败排查步骤：①确认文件不是扫描版（能否在PDF阅读器中选中文字）；②检查文件是否有复杂排版（多栏、艺术字、嵌入表格）；③尝试将DOCX转为简洁排版的PDF再上传；④若免费版提示OCR不支持，考虑升级套餐；⑤可手动在编辑器中录入简历内容绕过解析。若反复失败，提交technical工单时请附上文件（脱敏后）。",
+      "content": "简历解析失败与上传失败是两个不同阶段的问题——上传成功后，系统才开始解析文件内容。解析失败不影响已上传的文件，用户无需重新上传，只需排查解析原因。\n\nAgent引导用户排查的步骤：\n\nStep 1 — 判断是否为扫描版：打开上传的PDF，尝试用鼠标选中一段文字。若能选中并复制，为文字型PDF，解析应能正常运行；若无法选中，为扫描版/图片型，需要OCR（仅专业版支持）。\n\nStep 2 — 检查排版复杂度：多栏式简历（左栏联系方式、右栏正文）、使用大量图形框/文字框的设计型模板，往往导致解析乱序。建议用户将简历内容复制粘贴到一个空白Word文档，使用简洁单栏格式重新排版后另存为PDF上传。\n\nStep 3 — 检查文件是否受保护：在PDF阅读器的属性/安全选项中确认有无权限限制，有则去除后重试。\n\nStep 4 — 使用手动录入通道：若解析持续失败，用户可点击【跳过解析，手动录入】按钮，在平台编辑器中直接粘贴简历文字内容，绕过自动解析流程，不影响后续AI优化功能。\n\nStep 5 — 创建工单：若用户已尝试上述步骤3次以上仍无法解析，且无法手动录入，Agent须创建technical工单，请用户提供：文件类型描述（如\"双栏PDF，Word生成\"）以及是否为扫描版的判断结果。工单响应时间为1-2个工作日。",
       "keywords": [
         "解析失败",
         "无法解析",
@@ -617,7 +943,15 @@
         "内容识别失败"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "error_003",
@@ -632,7 +966,15 @@
         "无法生成"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "error_004",
@@ -648,7 +990,15 @@
         "转圈"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "error_005",
@@ -663,7 +1013,15 @@
         "支付问题"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer_then_escalate"
+      "recommended_action": "answer_then_escalate",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "error_006",
@@ -678,13 +1036,21 @@
         "没有邮件"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "error",
+        "troubleshooting",
+        "self-service"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ticket_001",
       "category": "ticket",
       "title": "什么时候创建工单",
-      "content": "以下情况必须创建工单：①用户反映退款/重复扣费问题；②账号被锁且邮件方式无法解锁；③解析连续失败且无法手动输入；④支付成功但功能未开通超过30分钟；⑤用户明确要求人工服务；⑥涉及数据删除的正式书面确认请求；⑦Agent无法在知识库中找到答案的问题。注意：Agent不应因担心无法回答而过度创建工单，应先尽力依据知识库回答。",
+      "content": "工单是客服系统的核心升级路径，但也是成本较高的操作，Agent应在合理判断后决定是否创建，而非遇到困难就直接建单。\n\n必须创建工单的七类场景：\n① 所有退款相关请求（无论金额、原因、用户情绪），财务合规要求，不可绕过。\n② 账号被锁且邮件解锁无效（用户无法自助解决）。\n③ 连续3次解析失败且无法手动录入，疑似文件或系统问题。\n④ 支付成功但功能未在30分钟内激活，疑似系统订单同步问题。\n⑤ 用户明确表示\"要找人工\"、\"要投诉\"。\n⑥ 涉及个人数据删除的正式书面确认请求（隐私合规要求）。\n⑦ 问题超出知识库范围，Agent无法提供准确回答，且问题对用户有实质影响。\n\n不应创建工单的情形：\n• 用户问了个知识库能回答的问题，但Agent没把握——应先检索知识库，查到了直接回答。\n• 用户情绪激动但问题本身有标准答案——先用知识库内容安抚+回答，必要时再建单。\n• 用户好奇地问了一个平台功能，知识库说\"不支持\"——直接告知即可。\n\n工单优先级判定：\n• 普通：常规咨询升级、技术问题、账号问题\n• 紧急：重复扣费、支付异常、账号被盗申诉、用户描述业务紧迫（如明天要用简历面试）\n\nAgent在创建工单后必须将工单编号告知用户，并说明预计响应时间，不得只说\"已帮您提交\"而不给反馈。",
       "keywords": [
         "创建工单",
         "何时转人工",
@@ -692,13 +1058,21 @@
         "工单触发条件"
       ],
       "risk_level": "medium",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "escalation",
+        "workflow",
+        "ops"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ticket_002",
       "category": "ticket",
       "title": "工单需要包含哪些字段",
-      "content": "工单必填字段：①用户ID或注册邮箱；②工单类型（account/billing/technical/privacy）；③问题描述（用户原话+Agent整理摘要）；④已尝试的解决步骤；⑤错误截图/证明文件（如有）；⑥紧急程度（普通/紧急）。billing类型额外需要：订单号、扣费时间、支付渠道。创建工单后，Agent需将工单编号告知用户。",
+      "content": "工单字段的完整性直接决定人工客服能否高效处理问题，Agent在创建工单前应完整收集以下信息。\n\n通用必填字段（所有工单类型）：\n① user_id 或注册邮箱：用于定位账号，两者提供其一即可。\n② ticket_type：枚举值，必须是以下之一：account（账号问题）/ billing（计费退款）/ technical（技术故障）/ privacy（数据隐私）。\n③ problem_summary：用户原话摘录（不超过200字）+ Agent整理的问题摘要（1-3句话）。两者都要，前者用于人工核实，后者用于快速定位。\n④ steps_tried：已尝试的自助排查步骤，格式\"Step X: [操作] → [结果]\"，避免人工重复引导。\n⑤ urgency：普通 / 紧急。用户自述有明确时间压力（如\"明天面试\"）时标记为紧急。\n⑥ attachments：错误截图、支付凭证、文件样本等，非必须但强烈建议。\n\nbilling类型额外必填：\n• order_id：订单号，格式 ORD-YYYYMM-XXXXXX，在账单中心可查。\n• charge_time：扣款时间（精确到分钟）。\n• payment_channel：微信 / 支付宝 / 银行卡，以及账号/卡号末四位。\n• charge_amount：每笔金额，若有多笔异常需逐条列出。\n\nprivacy类型额外必填：\n• data_scope：涉及哪些数据（简历文件 / 账号信息 / 全部）。\n• legal_basis：是否有法律要求（法院传票、政府指令等），有则需扫描件。\n\n字段缺失的处理：若用户无法提供某必填字段（如找不到订单号），Agent应引导用户查找，并在工单备注中注明\"用户未能提供order_id，已告知查找路径\"，不可留空不注明。",
       "keywords": [
         "工单字段",
         "工单信息",
@@ -707,7 +1081,15 @@
         "创建工单需要什么"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "escalation",
+        "workflow",
+        "ops"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ticket_003",
@@ -722,7 +1104,15 @@
         "等待时间"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "escalation",
+        "workflow",
+        "ops"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "ticket_004",
@@ -736,7 +1126,15 @@
         "Agent不能处理"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "escalation",
+        "workflow",
+        "ops"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "ticket_005",
@@ -751,7 +1149,15 @@
         "工单查询"
       ],
       "risk_level": "low",
-      "recommended_action": "answer"
+      "recommended_action": "answer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "escalation",
+        "workflow",
+        "ops"
+      ],
+      "requires_human_review": false
     },
     {
       "id": "boundary_001",
@@ -766,7 +1172,15 @@
         "offer"
       ],
       "risk_level": "high",
-      "recommended_action": "answer_with_disclaimer"
+      "recommended_action": "answer_with_disclaimer",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "boundary_002",
@@ -781,7 +1195,15 @@
         "超出范围"
       ],
       "risk_level": "high",
-      "recommended_action": "decline"
+      "recommended_action": "decline",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "boundary_003",
@@ -796,7 +1218,15 @@
         "违规上传"
       ],
       "risk_level": "high",
-      "recommended_action": "answer_with_warning"
+      "recommended_action": "answer_with_warning",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "boundary_004",
@@ -811,7 +1241,15 @@
         "Agent规则"
       ],
       "risk_level": "high",
-      "recommended_action": "escalate_if_unknown"
+      "recommended_action": "escalate_if_unknown",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "boundary_005",
@@ -826,7 +1264,15 @@
         "安抚用户"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     },
     {
       "id": "boundary_006",
@@ -841,7 +1287,15 @@
         "不知道怎么办"
       ],
       "risk_level": "high",
-      "recommended_action": "create_ticket"
+      "recommended_action": "create_ticket",
+      "source": "internal_policy_v1",
+      "updated_at": "2026-06-28",
+      "tags": [
+        "policy",
+        "disclaimer",
+        "safety"
+      ],
+      "requires_human_review": true
     }
   ]
 }

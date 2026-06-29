@@ -11,6 +11,7 @@ Action = Literal[
     "create_ticket",
     "decline",
     "clarify",
+    "ask_clarifying_question",
     "escalate_if_unknown",
 ]
 
@@ -23,6 +24,10 @@ class KnowledgeItem(BaseModel):
     keywords: list[str] = Field(default_factory=list)
     risk_level: Literal["low", "medium", "high"]
     recommended_action: Action
+    source: str | None = None
+    updated_at: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    requires_human_review: bool = False
 
 
 class SearchHit(BaseModel):

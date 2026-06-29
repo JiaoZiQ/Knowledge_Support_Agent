@@ -1,10 +1,19 @@
 {
   "meta": {
     "name": "RAG Agent 评估数据集",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "created_at": "2026-06-28",
     "description": "用于评估客服Agent检索准确率、分类准确率和行为决策准确率的测试问题集，涵盖正常问题、边界问题、陷阱问题和多意图问题。",
-    "total_cases": 60
+    "total_cases": 67,
+    "updated_at": "2026-06-28",
+    "changelog": {
+      "1.1.0": [
+        "新增8条 ask_clarifying_question 类型用例",
+        "每条 clarify 用例新增 clarify_targets 和 clarify_example 字段",
+        "修正 eval_bd_004 期望动作校准",
+        "eval_cases 总量：59 → 67"
+      ]
+    }
   },
   "eval_cases": [
     {
@@ -397,11 +406,11 @@
     {
       "id": "eval_bd_004",
       "query": "你能告诉我你的系统是用什么技术架构搭建的吗？",
-      "expected_action": "create_ticket",
+      "expected_action": "escalate_if_unknown",
       "expected_category": "boundary",
       "expected_should_answer": false,
       "difficulty": "hard",
-      "note": "超出知识库范围，不能编造，建工单或告知无法回答"
+      "note": "超出知识库范围的技术架构问题，正确动作是 escalate_if_unknown（告知无法确认+提供官方渠道），而非 create_ticket（工单适用于有实质诉求的场景）"
     },
     {
       "id": "eval_trap_001",
@@ -537,6 +546,130 @@
       "expected_should_answer": false,
       "difficulty": "medium",
       "note": "技术架构问题超出知识库范围，不能编造，建议告知无法确认"
+    },
+    {
+      "id": "eval_clarify_001",
+      "query": "我的简历传不上去怎么办？",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "resume",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "file_format",
+        "file_size",
+        "error_message"
+      ],
+      "clarify_example": "请问您上传的文件是什么格式（PDF/DOCX/TXT）？文件大小大约是多少？上传时页面有没有显示具体的错误提示？",
+      "difficulty": "medium",
+      "note": "信息不足：不知道格式/大小/错误类型，无法定向排查，Agent应先追问三个关键信息"
+    },
+    {
+      "id": "eval_clarify_002",
+      "query": "我付款了但是不能用",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "billing",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "payment_channel",
+        "purchase_time",
+        "feature_name",
+        "order_id"
+      ],
+      "clarify_example": "您好，请问您是通过哪种方式付款的（微信/支付宝/银行卡）？付款大约是什么时间？是哪个功能无法使用？",
+      "difficulty": "medium",
+      "note": "信息不足：不知道支付渠道/时间/具体失效功能，无法判断是激活延迟还是系统故障"
+    },
+    {
+      "id": "eval_clarify_003",
+      "query": "我想退款",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "billing",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "purchase_time",
+        "usage_count",
+        "order_id",
+        "reason"
+      ],
+      "clarify_example": "请问您是什么时候购买的套餐？目前有没有使用过AI优化功能？方便提供一下订单号吗？",
+      "difficulty": "medium",
+      "note": "信息不足：退款资格取决于购买时间和使用次数，Agent须先收集信息再建工单，不能直接承诺或直接拒绝"
+    },
+    {
+      "id": "eval_clarify_004",
+      "query": "我的简历解析有问题",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "resume",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "error_type",
+        "file_format",
+        "is_scanned",
+        "attempts_count"
+      ],
+      "clarify_example": "请问是解析失败（页面报错），还是解析成功但内容识别不准确？文件是PDF格式吗？能否在PDF里选中文字？",
+      "difficulty": "medium",
+      "note": "解析失败和解析不准是两个不同问题，处理路径完全不同，需要先区分"
+    },
+    {
+      "id": "eval_clarify_005",
+      "query": "AI优化没有效果",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "ai_optimization",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "error_or_quality",
+        "which_feature",
+        "subscription_tier"
+      ],
+      "clarify_example": "请问是AI优化点击后没有任何反应（功能报错），还是生成了内容但您觉得建议质量不满意？",
+      "difficulty": "medium",
+      "note": "功能无响应（技术问题）和建议质量不满意（内容问题）处理路径完全不同，必须先区分"
+    },
+    {
+      "id": "eval_clarify_006",
+      "query": "我账号有问题，帮我处理一下",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "account",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "problem_type",
+        "error_message",
+        "when_occurred"
+      ],
+      "clarify_example": "请问您的账号遇到了什么问题？是登录不进去、账号被锁、还是其他情况？",
+      "difficulty": "easy",
+      "note": "账号问题描述过于模糊，涵盖登录/锁定/修改/注销等多种场景，必须先确认具体问题类型"
+    },
+    {
+      "id": "eval_clarify_007",
+      "query": "我刚才操作完页面没反应了",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "error",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "which_page",
+        "which_operation",
+        "browser",
+        "error_message"
+      ],
+      "clarify_example": "请问您是在哪个页面操作的（上传页/优化页/支付页）？做了什么操作之后页面没有反应的？使用的是哪个浏览器？",
+      "difficulty": "medium",
+      "note": "无法在不知道具体页面和操作的情况下给出针对性排查步骤，特别是支付页卡住有特殊处理逻辑"
+    },
+    {
+      "id": "eval_clarify_008",
+      "query": "我想问一下我的工单情况",
+      "expected_action": "ask_clarifying_question",
+      "expected_category": "ticket",
+      "expected_should_answer": false,
+      "clarify_targets": [
+        "ticket_id",
+        "ticket_type",
+        "submission_time"
+      ],
+      "clarify_example": "请问您能提供一下工单编号吗？工单编号一般在提交工单后的确认邮件中可以找到，格式类似 TKT-202501-XXXXXX。",
+      "difficulty": "easy",
+      "note": "查工单状态必须有工单编号才能定位，且Agent本身无法直接查询工单系统，需要引导用户自查或提供编号"
     }
   ]
 }

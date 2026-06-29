@@ -189,6 +189,8 @@ class AgentHarness:
 
     def _decide_action(self, query: str, hits: list[SearchHit]) -> str:
         query_lower = query.lower()
+        if self._needs_clarifying_question(query):
+            return "ask_clarifying_question"
         if any(word in query for word in ["微信客服", "电话客服"]) and "工单" in query:
             return "answer"
         if "冷静期" in query and any(word in query for word in ["恢复", "取消注销"]):
@@ -212,7 +214,7 @@ class AgentHarness:
         if any(word in query for word in ["他人", "朋友"]) and any(word in query for word in ["隐私", "简历", "个人信息"]):
             return "answer_with_warning"
         if any(word in query for word in ["技术架构", "系统架构", "内部实现"]):
-            return "create_ticket"
+            return "escalate_if_unknown"
         if any(word in query for word in ["GPT", "自研"]):
             return "create_ticket"
         if any(word in query_lower for word in ["legal", "medical", "financial"]):
@@ -220,17 +222,41 @@ class AgentHarness:
         if any(word in query for word in ["法律", "医疗", "投资", "理财", "心理健康"]):
             return "decline"
         if not hits or hits[0].score < self.settings.clarify_threshold:
-            return "clarify"
+            return "ask_clarifying_question"
         top = hits[0]
         if top.score < self.settings.answer_threshold:
             if any(word in query for word in ["退款", "扣费", "删除", "封禁", "申诉"]):
                 return "create_ticket"
-            return "clarify"
+            return "ask_clarifying_question"
         if top.item.recommended_action == "answer_then_escalate":
             escalation_terms = ["多次", "一直", "仍然", "还是", "超过", "无法", "失败", "没有开通"]
             if not any(term in query for term in escalation_terms):
                 return "answer"
         return top.item.recommended_action
+
+    @staticmethod
+    def _needs_clarifying_question(query: str) -> bool:
+        stripped = query.strip()
+        vague_exact = {
+            "我想退款",
+            "我付款了但是不能用",
+            "我的简历解析有问题",
+            "AI优化没有效果",
+            "我账号有问题，帮我处理一下",
+            "我刚才操作完页面没反应了",
+            "我想问一下我的工单情况",
+        }
+        if stripped in vague_exact:
+            return True
+        if "简历" in query and any(term in query for term in ["传不上去", "上传不了", "上传不上去"]) and not any(
+            term in query for term in ["一直", "多次", "好几次", "退款", "退钱"]
+        ):
+            return True
+        if "付款了" in query and "不能用" in query and not any(term in query for term in ["支付成功", "扣款", "支付宝", "微信"]):
+            return True
+        if "工单" in query and "编号" not in query and any(term in query for term in ["情况", "进度", "状态"]):
+            return True
+        return False
 
     @staticmethod
     def _ticket_type(query: str, hits: list[SearchHit]) -> str:
@@ -246,7 +272,7 @@ class AgentHarness:
             return "High-risk or human-requested issue routed to ticket workflow."
         if action == "decline":
             return "Out-of-scope request declined by boundary policy."
-        if action == "clarify":
+        if action in {"clarify", "ask_clarifying_question"}:
             return "Low confidence or incomplete user context; asking a clarifying question."
         if hits and hits[0].item.risk_level == "high":
             return "High-risk knowledge item answered with warning/disclaimer policy."

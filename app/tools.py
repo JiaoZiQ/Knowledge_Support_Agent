@@ -74,6 +74,8 @@ def serialize_hits(hits: list[SearchHit]) -> list[dict[str, Any]]:
             "score": hit.score,
             "risk_level": hit.item.risk_level,
             "recommended_action": hit.item.recommended_action,
+            "source": hit.item.source,
+            "requires_human_review": hit.item.requires_human_review,
             "matched_keywords": hit.matched_keywords,
         }
         for hit in hits

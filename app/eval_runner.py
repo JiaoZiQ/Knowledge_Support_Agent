@@ -7,7 +7,7 @@ from app.harness import AgentHarness
 from app.schemas import ChatRequest, EvalCase, EvalResult
 
 
-NON_ANSWER_ACTIONS = {"create_ticket", "decline", "clarify"}
+NON_ANSWER_ACTIONS = {"create_ticket", "decline", "clarify", "ask_clarifying_question", "escalate_if_unknown"}
 
 
 class EvalRunner:

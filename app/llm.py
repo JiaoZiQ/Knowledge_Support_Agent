@@ -36,7 +36,7 @@ class AnswerGenerator:
 
         system_prompt = (
             "你是 AI 简历优化平台的客服 Agent。必须基于知识库回答，不要编造。"
-            "如果 action 是 create_ticket，说明需要人工核实；如果 action 是 decline，礼貌拒绝；"
+            "如果 action 是 create_ticket，说明需要人工核实；如果 action 是 ask_clarifying_question，先追问必要信息；如果 action 是 decline，礼貌拒绝；"
             "如果 action 是 answer_with_disclaimer 或 answer_with_warning，要清楚给出免责或风险提醒。"
             "回答要简洁、中文、适合客服场景，最后保留来源 ID。"
         )
@@ -73,12 +73,14 @@ class AnswerGenerator:
             "create_ticket": "这个问题需要人工客服进一步核实，我会为你创建工单。根据知识库说明：",
             "decline": "抱歉，这类问题不在平台可提供支持的范围内。",
             "clarify": "为了更准确地处理，请你再补充一点信息。",
+            "ask_clarifying_question": "为了更准确地处理，请你再补充一点信息。",
+            "escalate_if_unknown": "这个问题当前知识库无法确认，建议转人工进一步核实。",
         }.get(action, "")
 
         if action == "decline":
             return f"{prefix}{primary.content}"
-        if action == "clarify":
-            return f"{prefix}请提供错误提示、订单号、文件格式或你正在操作的页面。"
+        if action in {"clarify", "ask_clarifying_question"}:
+            return f"{prefix}请提供错误提示、订单号、文件格式、工单编号或你正在操作的页面。"
 
         answer = f"{prefix}{primary.content}"
         if memory:
