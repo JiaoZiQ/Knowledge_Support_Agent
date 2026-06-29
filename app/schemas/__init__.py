@@ -2,18 +2,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-
-Action = Literal[
-    "answer",
-    "answer_with_warning",
-    "answer_with_disclaimer",
-    "answer_then_escalate",
-    "create_ticket",
-    "decline",
-    "clarify",
-    "ask_clarifying_question",
-    "escalate_if_unknown",
-]
+from app.schemas.routing import Action, Intent, RoutingDecision, RoutingSource
 
 
 class KnowledgeItem(BaseModel):
@@ -50,6 +39,8 @@ class ChatResponse(BaseModel):
     ticket_id: str | None = None
     trace_id: str
     confidence: float
+    intent: Intent = "unknown"
+    routing_source: RoutingSource = "fallback_rule"
     memory_summary: str | None = None
 
 
@@ -77,10 +68,12 @@ class EvalCase(BaseModel):
     id: str
     query: str
     expected_action: Action
-    expected_category: str
-    expected_should_answer: bool
-    difficulty: str
-    note: str
+    expected_category: str | None = None
+    expected_intent: Intent = "unknown"
+    expected_should_answer: bool | None = None
+    difficulty: str | None = None
+    note: str | None = None
+    notes: str | None = None
 
 
 class EvalResult(BaseModel):
@@ -90,3 +83,20 @@ class EvalResult(BaseModel):
     refusal_precision: float
     average_latency_ms: float
     cases: list[dict[str, Any]]
+
+
+__all__ = [
+    "Action",
+    "Intent",
+    "RoutingDecision",
+    "RoutingSource",
+    "KnowledgeItem",
+    "SearchHit",
+    "ChatRequest",
+    "ChatResponse",
+    "TicketRequest",
+    "TicketResponse",
+    "UploadResponse",
+    "EvalCase",
+    "EvalResult",
+]

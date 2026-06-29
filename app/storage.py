@@ -98,7 +98,7 @@ class AppStorage:
 
     def update_memory(self, session_id: str, latest_user_message: str, latest_action: str) -> str:
         existing = self.get_memory(session_id)
-        fragment = f"最近用户问题：{latest_user_message[:80]}；最近动作：{latest_action}。"
+        fragment = f"Latest user query: {latest_user_message[:80]}; latest action: {latest_action}."
         summary = (existing + " " + fragment).strip()
         if len(summary) > 420:
             summary = summary[-420:]

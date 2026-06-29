@@ -1,0 +1,383 @@
+{
+  "total": 20,
+  "recall_at_1": 0.9,
+  "recall_at_3": 0.9,
+  "mrr": 0.9,
+  "no_hit_rate": 0.1,
+  "by_category": {
+    "account": {
+      "total": 2,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "ai_optimization": {
+      "total": 3,
+      "recall_1": 0.6667,
+      "recall_3": 0.6667
+    },
+    "billing": {
+      "total": 3,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "boundary": {
+      "total": 2,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "error": {
+      "total": 1,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "interview": {
+      "total": 1,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "privacy": {
+      "total": 2,
+      "recall_1": 0.5,
+      "recall_3": 0.5
+    },
+    "product": {
+      "total": 1,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "resume": {
+      "total": 4,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    },
+    "ticket": {
+      "total": 1,
+      "recall_1": 1.0,
+      "recall_3": 1.0
+    }
+  },
+  "cases": [
+    {
+      "id": "ret_001",
+      "query": "免费版和专业版区别",
+      "expected_ids": [
+        "product_003"
+      ],
+      "hit_ids": [
+        "product_003",
+        "billing_001",
+        "boundary_001"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "product"
+    },
+    {
+      "id": "ret_002",
+      "query": "支持上传 PDF DOCX TXT 吗",
+      "expected_ids": [
+        "resume_001"
+      ],
+      "hit_ids": [
+        "resume_001",
+        "resume_002",
+        "error_001"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "resume"
+    },
+    {
+      "id": "ret_003",
+      "query": "简历文件超过 15MB 上传失败",
+      "expected_ids": [
+        "resume_002"
+      ],
+      "hit_ids": [
+        "resume_002",
+        "resume_001",
+        "resume_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "resume"
+    },
+    {
+      "id": "ret_004",
+      "query": "项目经历没有被解析出来",
+      "expected_ids": [
+        "resume_003"
+      ],
+      "hit_ids": [
+        "resume_003",
+        "resume_004",
+        "ai_opt_003"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "resume"
+    },
+    {
+      "id": "ret_005",
+      "query": "导出 PDF 或 DOCX",
+      "expected_ids": [
+        "resume_004"
+      ],
+      "hit_ids": [
+        "resume_004",
+        "resume_001",
+        "resume_002"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "resume"
+    },
+    {
+      "id": "ret_006",
+      "query": "AI 从哪些方面优化简历",
+      "expected_ids": [
+        "ai_opt_001"
+      ],
+      "hit_ids": [
+        "resume_004",
+        "resume_001",
+        "resume_002"
+      ],
+      "rank": null,
+      "recall_1": false,
+      "recall_3": false,
+      "expected_category": "ai_optimization"
+    },
+    {
+      "id": "ret_007",
+      "query": "根据 JD 做岗位匹配建议",
+      "expected_ids": [
+        "ai_opt_002"
+      ],
+      "hit_ids": [
+        "ai_opt_002",
+        "ai_opt_001",
+        "ai_opt_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "ai_optimization"
+    },
+    {
+      "id": "ret_008",
+      "query": "实习经历怎么改写",
+      "expected_ids": [
+        "ai_opt_003"
+      ],
+      "hit_ids": [
+        "ai_opt_003",
+        "ai_opt_002",
+        "ai_opt_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "ai_optimization"
+    },
+    {
+      "id": "ret_009",
+      "query": "能生成面试题和项目追问吗",
+      "expected_ids": [
+        "interview_001"
+      ],
+      "hit_ids": [
+        "interview_001",
+        "boundary_002",
+        "ai_opt_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "interview"
+    },
+    {
+      "id": "ret_010",
+      "query": "忘记密码收不到验证码",
+      "expected_ids": [
+        "account_002",
+        "error_003"
+      ],
+      "hit_ids": [
+        "error_003",
+        "account_002",
+        "account_003"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "account"
+    },
+    {
+      "id": "ret_011",
+      "query": "更换绑定邮箱",
+      "expected_ids": [
+        "account_004"
+      ],
+      "hit_ids": [
+        "account_004",
+        "account_001",
+        "account_002"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "account"
+    },
+    {
+      "id": "ret_012",
+      "query": "支付成功但会员未开通",
+      "expected_ids": [
+        "billing_002"
+      ],
+      "hit_ids": [
+        "billing_002",
+        "billing_004",
+        "billing_003"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "billing"
+    },
+    {
+      "id": "ret_013",
+      "query": "退款需要什么信息",
+      "expected_ids": [
+        "billing_003"
+      ],
+      "hit_ids": [
+        "billing_003",
+        "billing_001",
+        "ticket_001"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "billing"
+    },
+    {
+      "id": "ret_014",
+      "query": "申请发票订单号税号",
+      "expected_ids": [
+        "billing_004"
+      ],
+      "hit_ids": [
+        "billing_004",
+        "billing_002",
+        "ticket_001"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "billing"
+    },
+    {
+      "id": "ret_015",
+      "query": "注销账号并删除数据",
+      "expected_ids": [
+        "privacy_002"
+      ],
+      "hit_ids": [
+        "account_001",
+        "account_003",
+        "account_004"
+      ],
+      "rank": null,
+      "recall_1": false,
+      "recall_3": false,
+      "expected_category": "privacy"
+    },
+    {
+      "id": "ret_016",
+      "query": "身份证银行卡敏感信息",
+      "expected_ids": [
+        "privacy_003"
+      ],
+      "hit_ids": [
+        "privacy_003",
+        "privacy_001",
+        "error_002"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "privacy"
+    },
+    {
+      "id": "ret_017",
+      "query": "页面一直转圈卡住",
+      "expected_ids": [
+        "error_002"
+      ],
+      "hit_ids": [
+        "error_002",
+        "privacy_003",
+        "privacy_002"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "error"
+    },
+    {
+      "id": "ret_018",
+      "query": "查询工单进度需要工单号",
+      "expected_ids": [
+        "ticket_002"
+      ],
+      "hit_ids": [
+        "ticket_002",
+        "ticket_001",
+        "billing_003"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "ticket"
+    },
+    {
+      "id": "ret_019",
+      "query": "不能提供法律医疗投资建议",
+      "expected_ids": [
+        "boundary_001"
+      ],
+      "hit_ids": [
+        "boundary_001",
+        "boundary_004",
+        "product_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "boundary"
+    },
+    {
+      "id": "ret_020",
+      "query": "不保证 offer 或成功率",
+      "expected_ids": [
+        "ai_opt_004",
+        "boundary_002"
+      ],
+      "hit_ids": [
+        "boundary_002",
+        "boundary_003",
+        "ai_opt_004"
+      ],
+      "rank": 1,
+      "recall_1": true,
+      "recall_3": true,
+      "expected_category": "boundary"
+    }
+  ]
+}

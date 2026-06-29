@@ -10,6 +10,9 @@ from app.harness import AgentHarness
 from app.knowledge import KnowledgeBase
 from app.llm import AnswerGenerator
 from app.embeddings import HashEmbeddingModel, OpenAIEmbeddingModel
+from app.policies.escalation import ConfidencePolicy
+from app.policies.guardrails import GuardrailPolicy
+from app.policies.intent_router import IntentRouter
 from app.schemas import ChatRequest, ChatResponse, TicketRequest, TicketResponse, UploadResponse
 from app.storage import AppStorage
 from app.tools import ToolRegistry
@@ -35,6 +38,9 @@ def create_services(settings: Settings) -> dict[str, object]:
     vector_store.build(items)
     storage = AppStorage(settings.database_path)
     tools = ToolRegistry(storage=storage, vector_store=vector_store)
+    guardrails = GuardrailPolicy()
+    intent_router = IntentRouter(settings=settings)
+    confidence_policy = ConfidencePolicy(settings=settings)
     answer_generator = AnswerGenerator(
         use_openai=settings.use_openai_llm,
         api_key=settings.openai_api_key,
@@ -46,6 +52,9 @@ def create_services(settings: Settings) -> dict[str, object]:
         storage=storage,
         tools=tools,
         answer_generator=answer_generator,
+        guardrails=guardrails,
+        intent_router=intent_router,
+        confidence_policy=confidence_policy,
     )
     eval_runner = EvalRunner(harness=harness, dataset_path=settings.eval_dataset_path)
     return {
@@ -54,6 +63,9 @@ def create_services(settings: Settings) -> dict[str, object]:
         "vector_store": vector_store,
         "storage": storage,
         "tools": tools,
+        "guardrails": guardrails,
+        "intent_router": intent_router,
+        "confidence_policy": confidence_policy,
         "harness": harness,
         "eval_runner": eval_runner,
     }
@@ -61,8 +73,8 @@ def create_services(settings: Settings) -> dict[str, object]:
 
 app = FastAPI(
     title="Knowledge Support Agent",
-    description="A customer support RAG Agent with a lightweight Agent Harness.",
-    version="0.1.0",
+    description="A controllable LangGraph knowledge support agent with RAG, guardrails, routing, tickets, traces, and evaluation.",
+    version="0.2.0",
 )
 services: dict[str, object] | None = None
 
@@ -89,6 +101,7 @@ def health() -> dict[str, object]:
         "embedding_provider": get_settings().embedding_provider,
         "llm_enabled": get_settings().use_openai_llm,
         "chat_model": get_settings().chat_model if get_settings().use_openai_llm else "template-fallback",
+        "router_mode": get_settings().router_mode,
     }
 
 
@@ -135,7 +148,7 @@ def create_ticket(request: TicketRequest) -> TicketResponse:
         priority=request.priority,
         metadata=request.metadata,
     )
-    return TicketResponse(ticket_id=ticket_id, estimated_response="1-3 个工作日")
+    return TicketResponse(ticket_id=ticket_id, estimated_response="1-3 business days")
 
 
 @app.get("/tickets")

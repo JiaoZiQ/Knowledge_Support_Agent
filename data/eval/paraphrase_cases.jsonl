@@ -1,0 +1,30 @@
+{"id":"para_001","query":"这个平台到底能干啥","expected_action":"answer","expected_intent":"feature_question","expected_category":"product","notes":"spoken product question"}
+{"id":"para_002","query":"普通用户和 pro 版差在哪","expected_action":"answer","expected_intent":"feature_question","expected_category":"product","notes":"spoken plan comparison"}
+{"id":"para_003","query":"咋上传简历文件","expected_action":"answer","expected_intent":"usage_question","expected_category":"resume","notes":"spoken upload"}
+{"id":"para_004","query":"docx 能不能传","expected_action":"answer","expected_intent":"usage_question","expected_category":"resume","notes":"file type"}
+{"id":"para_005","query":"导出的简历能下成 pdf 吗","expected_action":"answer","expected_intent":"usage_question","expected_category":"resume","notes":"export"}
+{"id":"para_006","query":"AI 能帮我润色项目经历吗","expected_action":"answer","expected_intent":"feature_question","expected_category":"ai_optimization","notes":"optimization paraphrase"}
+{"id":"para_007","query":"岗位 JD 放进去会给匹配建议不","expected_action":"answer","expected_intent":"usage_question","expected_category":"ai_optimization","notes":"JD paraphrase"}
+{"id":"para_008","query":"能出一些面试追问吗","expected_action":"answer","expected_intent":"feature_question","expected_category":"interview","notes":"interview paraphrase"}
+{"id":"para_009","query":"登录密码忘了咋办","expected_action":"answer","expected_intent":"usage_question","expected_category":"account","notes":"account paraphrase"}
+{"id":"para_010","query":"换绑邮箱在哪里操作","expected_action":"answer","expected_intent":"usage_question","expected_category":"account","notes":"email binding"}
+{"id":"para_011","query":"付了钱但会员还是没到账","expected_action":"create_ticket","expected_intent":"billing_issue","expected_category":"billing","notes":"payment escalation"}
+{"id":"para_012","query":"扣了两次钱怎么处理","expected_action":"create_ticket","expected_intent":"billing_issue","expected_category":"billing","notes":"duplicate charge"}
+{"id":"para_013","query":"想开发票给公司报销","expected_action":"create_ticket","expected_intent":"billing_issue","expected_category":"billing","notes":"invoice"}
+{"id":"para_014","query":"把我的资料都删掉","expected_action":"answer_with_warning","expected_intent":"privacy_request","expected_category":"privacy","notes":"privacy delete"}
+{"id":"para_015","query":"身份证号能不能发给你查账号","expected_action":"answer_with_warning","expected_intent":"privacy_request","expected_category":"privacy","notes":"sensitive data"}
+{"id":"para_016","query":"上传界面一直卡着","expected_action":"answer","expected_intent":"technical_issue","expected_category":"error","notes":"technical paraphrase"}
+{"id":"para_017","query":"收不到短信验证码","expected_action":"answer","expected_intent":"technical_issue","expected_category":"error","notes":"code paraphrase"}
+{"id":"para_018","query":"找真人客服","expected_action":"create_ticket","expected_intent":"human_escalation","expected_category":"ticket","notes":"human paraphrase"}
+{"id":"para_019","query":"能保证进大厂吗","expected_action":"answer_with_disclaimer","expected_intent":"capability_boundary","expected_category":"boundary","notes":"guarantee paraphrase"}
+{"id":"para_020","query":"我想退款","expected_action":"ask_clarifying_question","expected_intent":"refund_request","notes":"vague refund"}
+{"id":"para_021","query":"pro 权益和普通账号有什么差别","expected_action":"answer","expected_intent":"feature_question","expected_category":"product","notes":"non-template plan wording"}
+{"id":"para_022","query":"会员权益还没生效，我已经付过款了","expected_action":"create_ticket","expected_intent":"billing_issue","expected_category":"billing","notes":"payment not applied without old phrasing"}
+{"id":"para_023","query":"想把账户里保存的内容清空","expected_action":"answer_with_warning","expected_intent":"privacy_request","expected_category":"privacy","notes":"privacy deletion paraphrase"}
+{"id":"para_024","query":"能不能让真实的人联系我","expected_action":"create_ticket","expected_intent":"human_escalation","expected_category":"ticket","notes":"human handoff paraphrase"}
+{"id":"para_025","query":"我不想说细节，先帮我处理","expected_action":"ask_clarifying_question","expected_intent":"unknown","notes":"underspecified request"}
+{"id":"para_026","query":"合同这块我该怎么维权","expected_action":"decline","expected_intent":"unsafe_or_regulated_advice","expected_category":"boundary","notes":"legal advice paraphrase"}
+{"id":"para_027","query":"直接给我从零开始写一份简历","expected_action":"answer_with_warning","expected_intent":"capability_boundary","expected_category":"boundary","notes":"resume ghostwriting boundary"}
+{"id":"para_028","query":"把别人资料导进去一起看","expected_action":"answer_with_warning","expected_intent":"capability_boundary","expected_category":"boundary","notes":"third-party data boundary"}
+{"id":"para_029","query":"下载后的版式乱了","expected_action":"answer","expected_intent":"technical_issue","expected_category":"error","notes":"export formatting issue"}
+{"id":"para_030","query":"JD 丢进去能不能看匹配度","expected_action":"answer","expected_intent":"usage_question","expected_category":"ai_optimization","notes":"JD matching paraphrase"}
