@@ -1,6 +1,6 @@
 # Knowledge Support Agent
 
-A controllable Knowledge Support Agent for an AI resume platform, built with LangGraph, RAG, guardrails, structured routing, human escalation, observability, and offline evaluation.
+A controllable Knowledge Support Agent for an AI resume platform, built with LangGraph, Chroma RAG, guardrail-first routing, structured routing fallback, human escalation, traces, and offline evaluation.
 
 ![Knowledge Support Agent demo](assets/demo.png)
 
@@ -8,31 +8,44 @@ A controllable Knowledge Support Agent for an AI resume platform, built with Lan
 
 ```mermaid
 flowchart TD
-  U["User Query"] --> S["Session / Profile"]
-  S --> R["Chroma Retrieval"]
-  R --> G["Guardrails"]
-  G --> L["Structured Router"]
-  L --> C["Confidence Policy"]
+  U["User query"] --> S["Session and profile"]
+  S --> R["Chroma retrieval"]
+  R --> G["Guardrail check"]
+  G --> L["Structured router"]
+  L --> C["Confidence policy"]
   C --> A["Answer"]
   C --> Q["Clarify"]
   C --> D["Decline"]
-  C --> T["Ticket"]
-  A --> O["Trace + Evaluation"]
+  C --> T["Create ticket"]
+  A --> O["Trace and evaluation"]
   Q --> O
   D --> O
   T --> O
 ```
 
+The workflow is implemented as a LangGraph state machine:
+
+```text
+prepare_session
+  -> load_profile
+  -> retrieve
+  -> guardrail_check
+  -> route_intent
+  -> confidence_check
+  -> answer / clarify / decline / create_ticket
+  -> persist_trace
+```
+
 ## Core Capabilities
 
-- LangGraph workflow with explicit nodes for session, profile, retrieval, guardrails, routing, confidence policy, response, tickets, and trace persistence.
-- Chroma-backed RAG with an offline hash embedding fallback and optional OpenAI-compatible embeddings.
-- Guardrail-first routing for refunds, billing, privacy, account security, human escalation, regulated advice, exaggerated guarantees, and prompt injection.
-- LLM structured routing with Pydantic validation and deterministic offline fallback.
-- Human escalation and local ticket persistence.
-- SQLite session memory and trace observability with minimal profile logging and basic redaction.
-- Offline reproducible evaluation for standard, paraphrase, adversarial, and retrieval cases.
-- FastAPI API, Streamlit UI, Dockerfile, docker-compose, tests, and GitHub Actions.
+- LangGraph workflow with explicit nodes for session, profile, retrieval, guardrails, routing, confidence checks, response generation, ticket creation, and trace persistence.
+- Chroma-backed RAG using an offline hash embedding default, with optional OpenAI-compatible embeddings.
+- Guardrail-first handling for refunds, billing issues, privacy/account-security requests, human escalation, regulated advice, exaggerated success claims, and prompt injection.
+- Structured router interface with Pydantic validation. In default mode it uses deterministic offline fallback, so the project runs without an OpenAI API key.
+- Optional OpenAI-compatible routing and answer generation.
+- SQLite session memory, trace logs, and local ticket storage.
+- Offline evaluation for standard, paraphrase, adversarial, and retrieval cases.
+- FastAPI API, Streamlit UI, Dockerfile, Docker Compose, tests, and GitHub Actions.
 
 ## Install And Run
 
@@ -62,20 +75,32 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Start the demo UI in another terminal:
+Start the Streamlit UI in another terminal:
 
 ```bash
 streamlit run ui/streamlit_app.py
 ```
 
-Docker:
+Local URLs:
+
+- API docs: `http://127.0.0.1:8000/docs`
+- Streamlit UI: `http://127.0.0.1:8501`
+
+## Docker Compose
 
 ```bash
 docker compose up --build
 ```
 
-The API runs on `http://127.0.0.1:8000`, and the Streamlit UI runs on `http://127.0.0.1:8501`.
-Docker Compose configuration has passed static validation, but end-to-end container startup has not been fully verified because the local Docker build timed out.
+Compose services:
+
+- `api`: FastAPI service exposed on `8000:8000`
+- `ui`: Streamlit service exposed on `8501:8501`
+- The UI calls the API through `API_BASE_URL=http://api:8000`
+- `./data` and `./artifacts` are mounted for Chroma, SQLite, tickets, traces, and evaluation outputs
+- The UI waits for the API healthcheck before starting
+
+Docker Compose configuration has passed static validation with `docker compose config`, but end-to-end container startup has not been fully verified because the local Docker build timed out.
 
 ## Configuration
 
@@ -95,7 +120,7 @@ RETRIEVAL_MIN_SCORE=0.35
 ROUTING_MIN_CONFIDENCE=0.60
 ```
 
-OpenAI-compatible routing or generation:
+OpenAI-compatible mode:
 
 ```env
 ROUTER_MODE=openai
@@ -106,22 +131,22 @@ USE_OPENAI_LLM=true
 CHAT_MODEL=gpt-4o-mini
 ```
 
-The project remains runnable without `OPENAI_API_KEY`. If the structured router fails, times out, returns invalid JSON, or has no key, the deterministic fallback router is used.
+The project remains runnable without `OPENAI_API_KEY`. If the structured router is unavailable, times out, returns invalid JSON, or has low confidence, the deterministic offline fallback and confidence policy are used.
 
 ## API Example
 
 ```bash
 curl -X POST http://127.0.0.1:8000/chat \
   -H "Content-Type: application/json" \
-  -d '{"query":"支付成功但是会员没有开通","user_id":"demo_user"}'
+  -d '{"query":"The payment succeeded but my membership is not active","user_id":"demo_user"}'
 ```
 
-Example response:
+Example response shape:
 
 ```json
 {
   "session_id": "sess_xxx",
-  "answer": "这类问题需要核查真实订单状态。我已经为你创建工单...",
+  "answer": "This request requires order verification. A ticket has been created...",
   "action": "create_ticket",
   "intent": "billing_issue",
   "routing_source": "guardrail",
@@ -132,7 +157,7 @@ Example response:
     {
       "id": "billing_002",
       "category": "billing",
-      "title": "支付成功但未开通",
+      "title": "Payment succeeded but membership is inactive",
       "score": 1.03
     }
   ]
@@ -141,11 +166,11 @@ Example response:
 
 ## Demo Scenarios
 
-- 功能咨询: `免费版和专业版有什么区别？` -> `answer`
-- 模糊问题: `这个怎么弄？` -> `ask_clarifying_question`
-- 退款/扣费问题: `支付成功但是会员没有开通` -> `create_ticket`
-- 医疗/法律/投资建议: `帮我判断劳动合同纠纷该怎么起诉` -> `decline`
-- 人工客服: `我要找人工客服处理投诉` -> `create_ticket`
+- Feature question: `What is the difference between the free and pro plans?` -> `answer`
+- Vague request: `Can you help me with this?` -> `ask_clarifying_question`
+- Billing/refund issue: `The payment succeeded but my membership is not active` -> `create_ticket`
+- Legal, medical, or investment advice: `Can you write a legal claim for my contract dispute?` -> `decline`
+- Human escalation: `I want to talk to a human support agent` -> `create_ticket`
 
 ## Evaluation
 
@@ -178,10 +203,11 @@ pytest -q
 
 The test suite covers offline no-key behavior, guardrails, fallback routing, retrieval confidence policy, `/health`, `/chat`, ticket creation, prompt injection handling, and trace persistence.
 
-## Limitations / Future Work
+## Limitations
 
+- This is a controlled support workflow, not a fully autonomous production agent.
 - The current knowledge base is intentionally compact and should be expanded before production use.
-- Offline routing is deterministic fallback logic; it is not equivalent to real LLM reasoning.
-- Retrieval uses local hash embeddings by default for reproducibility, so semantic recall is limited.
+- Default routing is deterministic offline fallback logic, not real LLM reasoning.
+- Hash embeddings are used by default for reproducibility, so semantic retrieval quality is limited.
 - Docker Compose configuration has passed static validation, but end-to-end container startup still needs to be verified in an environment where Docker build completes.
 - Production deployment still needs authentication, rate limiting, stronger PII handling, centralized monitoring, and integration with a real ticketing system.

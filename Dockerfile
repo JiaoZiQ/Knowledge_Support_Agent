@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN mkdir -p /app/data/chroma /app/data/artifacts /app/artifacts/eval
+RUN mkdir -p /app/data/chroma /app/artifacts/eval
 
 EXPOSE 8000
 
